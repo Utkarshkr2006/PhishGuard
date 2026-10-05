@@ -50,9 +50,9 @@ data/PhiUSIIL_Phishing_URL_Dataset.csv
 data/phiusiil_phishing_url_dataset.zip
 
 # ── Trained Model Binaries ────────────────────────────────────
-# Large binary .pkl files are not committed.
-# Retrain using: python model/train_models.py
-model/random_forest.pkl
+# random_forest.pkl IS committed — it is required for Flask inference.
+# Benchmark-only models are excluded (not needed at runtime).
+# To retrain all models: python model/train_models.py
 model/decision_tree.pkl
 model/logistic_regression.pkl
 

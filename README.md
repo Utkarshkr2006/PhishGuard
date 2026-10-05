@@ -167,11 +167,7 @@ The primary metric displayed to users is the **Heuristic Risk Score (0–100)**:
    cd PhishGuard
    ```
 
-   > **Note:** Trained model `.pkl` files and the full dataset CSV are **not included** in the repository due to size. You must retrain models before running the app:
-   > ```bash
-   > # First download the dataset from UCI ML Repository (Dataset ID: 967) into data/
-   > python model/train_models.py
-   > ```
+   > **Note:** The trained Random Forest inference model (`model/random_forest.pkl`) is included in the repository. No retraining is required to run the application after cloning.
 
 2. **Create and activate a virtual environment:**
    - **Windows (PowerShell):**
@@ -232,6 +228,17 @@ python analysis/test_risk_scoring.py
 # Run full end-to-end regression validation
 python data/validate_phase8.py
 ```
+
+### Retraining the Model (Developer / Reproducibility)
+
+Retraining is **not required** to run PhishGuard. The trained Random Forest model is included in the repository.
+
+To reproduce model training from scratch:
+1. Download the PhiUSIIL dataset from the [UCI ML Repository (Dataset ID: 967)](https://archive.ics.uci.edu/dataset/967) into `data/`.
+2. Run the training script:
+   ```bash
+   python model/train_models.py
+   ```
 
 ---
 

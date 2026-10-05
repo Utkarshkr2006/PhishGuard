@@ -42,13 +42,12 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-> **Note:** Model `.pkl` files and the full dataset CSV are excluded from the repository due to size constraints.
-> You must re-train models locally before testing:
-> ```bash
-> python model/train_models.py
-> ```
-> This requires `data/PhiUSIIL_Phishing_URL_Dataset.csv`.
-> Download it from the [UCI ML Repository (Dataset ID 967)](https://archive.ics.uci.edu/dataset/967).
+> **Note:** The trained Random Forest model (`model/random_forest.pkl`) is included in the repository.
+> No retraining is required to run PhishGuard or its tests after cloning.
+>
+> To reproduce model training from scratch (developer / reproducibility only):
+> 1. Download `data/PhiUSIIL_Phishing_URL_Dataset.csv` from the [UCI ML Repository (Dataset ID 967)](https://archive.ics.uci.edu/dataset/967).
+> 2. Run: `python model/train_models.py`
 
 ---
 
