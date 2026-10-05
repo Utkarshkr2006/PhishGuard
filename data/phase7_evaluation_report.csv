@@ -1,0 +1,10 @@
+URL,Model_Prediction,Model_Phishing_Probability,Risk_Score,Risk_Level,Top_Indicators
+https://www.wikipedia.org,Legitimate,0.0028,0,LOW,Uses encrypted HTTPS connection protocol | Clean root domain structure without suspicious path artifacts
+https://accounts.google.com,Legitimate,0.0,15,LOW,Suspicious account/login-related keyword indicator detected
+https://github.com/login,Phishing,1.0,30,MEDIUM,Suspicious account/login-related keyword indicator detected
+https://example.com/products?id=12345,Phishing,1.0,30,MEDIUM,"High numeric digit concentration detected (5 digits, 13.5% digit ratio)"
+http://example.com,Phishing,1.0,30,MEDIUM,Does not use HTTPS encryption (HTTP connection)
+https://example.com/login/verify,Phishing,1.0,30,MEDIUM,Suspicious account/login-related keyword indicator detected
+http://secure-login-verify-account.bank-update.xyz/login.php?user=123&token=abc,Phishing,1.0,100,CRITICAL,Does not use HTTPS encryption (HTTP connection) | Suspicious-TLD indicator detected (commonly associated with high-risk domain extensions) | Suspicious account/login-related keyword indicator detected
+http://192.168.1.100/admin/login,Phishing,1.0,100,CRITICAL,Does not use HTTPS encryption (HTTP connection) | IP address used directly as the domain instead of a domain name | Suspicious account/login-related keyword indicator detected
+http://admin:secret@phishing-target.com/account,Phishing,1.0,80,CRITICAL,"Does not use HTTPS encryption (HTTP connection) | URL contains @ symbol (1), which can obscure the actual destination domain | Suspicious account/login-related keyword indicator detected"

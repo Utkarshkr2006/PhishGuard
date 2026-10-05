@@ -1,0 +1,29 @@
+{
+  "dataset_total_urls": 235795,
+  "unique_domains": 175509,
+  "train_url_count": 193843,
+  "test_url_count": 41952,
+  "train_domain_count": 140407,
+  "test_domain_count": 35102,
+  "domain_overlap": 0,
+  "metrics": {
+    "accuracy": 0.9954,
+    "macro_f1": 0.995,
+    "phishing_class_0": {
+      "precision": 0.9962,
+      "recall": 0.9909,
+      "f1_score": 0.9936
+    },
+    "legitimate_class_1": {
+      "precision": 0.995,
+      "recall": 0.9979,
+      "f1_score": 0.9964
+    },
+    "confusion_matrix": {
+      "tn": 14870,
+      "fp": 136,
+      "fn": 57,
+      "tp": 26889
+    }
+  }
+}

@@ -1,0 +1,4 @@
+Model,Accuracy,Phishing_Precision,Phishing_Recall,Phishing_F1,Legit_Precision,Legit_Recall,Legit_F1,Macro_F1,TN_Phishing_Correct,FP_Phishing_as_Legit,FN_Legit_as_Phishing,TP_Legit_Correct
+Logistic Regression,0.9939,0.9986,0.9871,0.9928,0.9904,0.999,0.9947,0.9937,19928,261,28,26942
+Decision Tree,0.9945,0.9959,0.9912,0.9935,0.9934,0.997,0.9952,0.9944,20011,178,82,26888
+Random Forest,0.9952,0.9971,0.9916,0.9943,0.9937,0.9978,0.9958,0.9951,20019,170,58,26912

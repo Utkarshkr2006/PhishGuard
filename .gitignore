@@ -1,0 +1,64 @@
+# ============================================================
+# PhishGuard — .gitignore
+# ============================================================
+
+# ── Python Bytecode ─────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# ── Distribution / Packaging ────────────────────────────────
+dist/
+build/
+*.egg-info/
+*.egg
+
+# ── Virtual Environments ────────────────────────────────────
+.env
+.venv/
+venv/
+ENV/
+env/
+
+# ── Pytest / Testing ────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ── Jupyter Notebooks (scratch) ─────────────────────────────
+.ipynb_checkpoints/
+
+# ── Editor / IDE ─────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ── Operating System Files ───────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Logs ─────────────────────────────────────────────────────
+*.log
+
+# ── Large Dataset Files ───────────────────────────────────────
+# These files exceed practical Git limits.
+# Download dataset from: https://archive.ics.uci.edu/dataset/967
+data/PhiUSIIL_Phishing_URL_Dataset.csv
+data/phiusiil_phishing_url_dataset.zip
+
+# ── Trained Model Binaries ────────────────────────────────────
+# Large binary .pkl files are not committed.
+# Retrain using: python model/train_models.py
+model/random_forest.pkl
+model/decision_tree.pkl
+model/logistic_regression.pkl
+
+# ── Secrets / Credentials ────────────────────────────────────
+*.pem
+*.key
+*.secret
+.env.local
+.env.production

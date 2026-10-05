@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analysis Result - PhishGuard</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <!-- Cyber Grid Background Overlay -->
+  <div class="grid-overlay"></div>
+
+  <div class="app-container">
+    <!-- Navigation / Header -->
+    <header class="navbar">
+      <a href="/" class="brand">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="m9 12 2 2 4-4"/>
+          </svg>
+        </div>
+        <span class="brand-text">PhishGuard</span>
+      </a>
+      <a href="/" class="btn-nav">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"/>
+          <polyline points="12 19 5 12 12 5"/>
+        </svg>
+        Analyze Another URL
+      </a>
+    </header>
+
+    <!-- Main Results Dashboard -->
+    <main class="results-dashboard">
+      
+      <!-- Analyzed URL Header Banner -->
+      <section class="url-banner">
+        <span class="banner-label">ANALYZED TARGET URL</span>
+        <div class="url-display-box">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+          <span class="url-text">{{ url }}</span>
+        </div>
+      </section>
+
+      <!-- Primary Risk Highlights Grid -->
+      <section class="risk-overview-grid">
+        <!-- Risk Level Box -->
+        <div class="risk-card risk-level-card level-{{ risk_result.risk_level.lower() }}">
+          <span class="card-caption">SECURITY RISK LEVEL</span>
+          <div class="risk-level-badge badge-{{ risk_result.risk_level.lower() }}">
+            {% if risk_result.risk_level == 'LOW' %}
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                <polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+            {% elif risk_result.risk_level == 'MEDIUM' %}
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="8" x2="12" y2="12"/>
+                <line x1="12" y1="16" x2="12.01" y2="16"/>
+              </svg>
+            {% else %}
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/>
+                <line x1="12" y1="8" x2="12" y2="12"/>
+                <line x1="12" y1="16" x2="12.01" y2="16"/>
+              </svg>
+            {% endif %}
+            <span class="level-text">{{ risk_result.risk_level }}</span>
+          </div>
+        </div>
+
+        <!-- Risk Score Box -->
+        <div class="risk-card score-card">
+          <span class="card-caption">HEURISTIC RISK SCORE</span>
+          <div class="score-value-container">
+            <span class="score-number score-color-{{ risk_result.risk_level.lower() }}">{{ risk_result.risk_score }}</span>
+            <span class="score-denom">/ 100</span>
+          </div>
+          <span class="score-caption-subtext">Deterministic structural score (0–24 Low &bull; 25–49 Medium &bull; 50–74 High &bull; 75–100 Critical)</span>
+        </div>
+      </section>
+
+      <!-- Why This URL Was Flagged (Risk Indicators) -->
+      <section class="section-card">
+        <h3 class="section-heading text-warning">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+            <polyline points="2 17 12 22 22 17"/>
+            <polyline points="2 12 12 17 22 12"/>
+          </svg>
+          Why This URL Was Flagged (Detected Security Indicators)
+        </h3>
+        <p class="section-context-note">Structural indicators reflect observed URL lexical patterns. For example, login or account keywords frequently occur on legitimate authentication services as well as phishing pages.</p>
+
+        {% if risk_result.top_reasons %}
+          <ul class="indicator-list">
+            {% for reason in risk_result.top_reasons %}
+              <li class="indicator-item item-risk">
+                <span class="indicator-icon">⚠️</span>
+                <span>{{ reason }}</span>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="empty-state-text">No suspicious indicators were triggered for this URL.</p>
+        {% endif %}
+      </section>
+
+      <!-- Positive Structural Signals -->
+      {% if explanation_result.positive_signals %}
+      <section class="section-card">
+        <h3 class="section-heading text-safe">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          Positive Structural Indicators
+        </h3>
+        <p class="section-context-note">Positive indicators reflect standard URL characteristics (such as HTTPS encryption protocol). Note: Positive signals do not constitute proof of destination safety.</p>
+        <ul class="indicator-list">
+          {% for signal in explanation_result.positive_signals %}
+            <li class="indicator-item item-safe">
+              <span class="indicator-icon">🛡️</span>
+              <span>{{ signal }}</span>
+            </li>
+          {% endfor %}
+        </ul>
+      </section>
+      {% endif %}
+
+      <!-- Assessment Summary & Actionable Recommendation -->
+      <section class="summary-rec-grid">
+        <div class="info-card">
+          <h4 class="card-title">ASSESSMENT SUMMARY</h4>
+          <p class="card-body-text">{{ risk_result.summary }}</p>
+        </div>
+
+        <div class="info-card rec-card">
+          <h4 class="card-title text-accent">ACTIONABLE RECOMMENDATION</h4>
+          <p class="card-body-text">{{ risk_result.recommendation }}</p>
+        </div>
+      </section>
+
+      <!-- Model Supporting Signal (Secondary Hierarchy) -->
+      <section class="section-card secondary-signal-card">
+        <h4 class="secondary-title">Machine Learning Model Supporting Signal</h4>
+        <div class="signal-details">
+          <div class="signal-metric">
+            <span class="signal-label">Model Classification:</span>
+            <span class="signal-val badge-subtle">{{ prediction_result.prediction }}</span>
+          </div>
+          <div class="signal-metric">
+            <span class="signal-label">Model Phishing Signal:</span>
+            <span class="signal-val">{{ "%.4f"|format(prediction_result.phishing_probability) }}</span>
+            <span class="signal-disclaimer">(Model signal, not a calibrated real-world probability)</span>
+          </div>
+          <div class="signal-metric">
+            <span class="signal-label">Model & Rule Agreement:</span>
+            <span class="signal-val">{{ risk_result.confidence_label }}</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer Action -->
+      <div class="action-footer">
+        <a href="/" class="btn-submit">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 4 23 10 17 10"/>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+          </svg>
+          Analyze Another URL
+        </a>
+      </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>PhishGuard &bull; Cybersecurity Hackathon Project</p>
+    </footer>
+  </div>
+</body>
+</html>

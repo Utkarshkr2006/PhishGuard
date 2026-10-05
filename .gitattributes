@@ -1,0 +1,32 @@
+# PhishGuard — .gitattributes
+# Ensure consistent line endings across platforms
+
+# Default: normalize all text files to LF in the repository
+* text=auto
+
+# Python source files
+*.py text eol=lf
+
+# Web templates and styles
+*.html text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+
+# Documentation
+*.md text eol=lf
+*.txt text eol=lf
+*.json text eol=lf
+*.csv text eol=lf
+
+# Binary model files — treat as binary (no line-ending conversion)
+*.pkl binary
+
+# Image files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+
+# Archive files
+*.zip binary
