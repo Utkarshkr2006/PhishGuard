@@ -85,16 +85,28 @@
 
         <!-- Risk Score Box -->
         <div class="risk-card score-card">
-          <span class="card-caption">HEURISTIC RISK SCORE</span>
+          <span class="card-caption">Risk Score</span>
           <div class="score-value-container">
             <span class="score-number score-color-{{ risk_result.risk_level.lower() }}">{{ risk_result.risk_score }}</span>
             <span class="score-denom">/ 100</span>
           </div>
-          <span class="score-caption-subtext">Deterministic structural score (0–24 Low &bull; 25–49 Medium &bull; 50–74 High &bull; 75–100 Critical)</span>
+          <p class="score-caption-subtext">Lower scores indicate fewer suspicious patterns. Higher scores indicate more warning signs.</p>
+          <p class="score-disclaimer-note">This score is based on patterns found in the web address. It does not guarantee that a website is safe or malicious.</p>
+          <span class="score-bands-text">(0–24 Low &bull; 25–49 Medium &bull; 50–74 High &bull; 75–100 Critical)</span>
         </div>
       </section>
 
-      <!-- Why This URL Was Flagged (Risk Indicators) -->
+      <!-- Clear Limitations Notice -->
+      <section class="limitations-banner">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="16" x2="12" y2="12"/>
+          <line x1="12" y1="8" x2="12.01" y2="8"/>
+        </svg>
+        <span>PhishGuard checks the web address itself. It does not open or visit the website. This assessment is not a guarantee of safety, and a secure HTTPS connection does not guarantee that a website is trustworthy.</span>
+      </section>
+
+      <!-- Warning Section -->
       <section class="section-card">
         <h3 class="section-heading text-warning">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -102,9 +114,10 @@
             <polyline points="2 17 12 22 22 17"/>
             <polyline points="2 12 12 17 22 12"/>
           </svg>
-          Why This URL Was Flagged (Detected Security Indicators)
+          What We Noticed
         </h3>
-        <p class="section-context-note">Structural indicators reflect observed URL lexical patterns. For example, login or account keywords frequently occur on legitimate authentication services as well as phishing pages.</p>
+        <p class="section-intro">These are the warning signs PhishGuard found in the web address.</p>
+        <p class="section-context-note">We checked the web address for suspicious patterns. For example, login or account keywords frequently occur on authentic service portals as well as phishing pages.</p>
 
         {% if risk_result.top_reasons %}
           <ul class="indicator-list">
@@ -116,20 +129,20 @@
             {% endfor %}
           </ul>
         {% else %}
-          <p class="empty-state-text">No suspicious indicators were triggered for this URL.</p>
+          <p class="empty-state-text">No suspicious indicators were detected in the web address.</p>
         {% endif %}
       </section>
 
-      <!-- Positive Structural Signals -->
+      <!-- Positive Signs Section -->
       {% if explanation_result.positive_signals %}
       <section class="section-card">
         <h3 class="section-heading text-safe">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
           </svg>
-          Positive Structural Indicators
+          Good Signs We Found
         </h3>
-        <p class="section-context-note">Positive indicators reflect standard URL characteristics (such as HTTPS encryption protocol). Note: Positive signals do not constitute proof of destination safety.</p>
+        <p class="section-context-note">These are characteristics that look normal or reassuring. They do not guarantee that the website is safe.</p>
         <ul class="indicator-list">
           {% for signal in explanation_result.positive_signals %}
             <li class="indicator-item item-safe">
@@ -154,25 +167,38 @@
         </div>
       </section>
 
-      <!-- Model Supporting Signal (Secondary Hierarchy) -->
+      <!-- PhishGuard Assessment (Simplified User-Facing Signal) -->
       <section class="section-card secondary-signal-card">
-        <h4 class="secondary-title">Machine Learning Model Supporting Signal</h4>
+        <h4 class="secondary-title">PhishGuard Assessment</h4>
         <div class="signal-details">
           <div class="signal-metric">
-            <span class="signal-label">Model Classification:</span>
-            <span class="signal-val badge-subtle">{{ prediction_result.prediction }}</span>
+            <span class="signal-label">Overall Assessment:</span>
+            {% if prediction_result.prediction == 'Legitimate' %}
+              <span class="signal-val badge-subtle">Likely Legitimate</span>
+              <p class="signal-subtext">We didn't find strong suspicious patterns in this web address.</p>
+            {% else %}
+              <span class="signal-val badge-subtle">Potentially Suspicious</span>
+              <p class="signal-subtext">PhishGuard found patterns that may be associated with phishing.</p>
+            {% endif %}
           </div>
           <div class="signal-metric">
-            <span class="signal-label">Model Phishing Signal:</span>
-            <span class="signal-val">{{ "%.4f"|format(prediction_result.phishing_probability) }}</span>
-            <span class="signal-disclaimer">(Model signal, not a calibrated real-world probability)</span>
-          </div>
-          <div class="signal-metric">
-            <span class="signal-label">Model & Rule Agreement:</span>
+            <span class="signal-label">Confidence Agreement:</span>
             <span class="signal-val">{{ risk_result.confidence_label }}</span>
           </div>
+          <p class="signal-disclaimer">This is PhishGuard's assessment based on patterns found in the web address. It is not a guaranteed prediction.</p>
         </div>
       </section>
+
+      <!-- Technical Audit & Model Details (Collapsed for Non-Technical Users) -->
+      <details class="tech-details-accordion">
+        <summary class="tech-details-summary">Technical Audit & Model Details</summary>
+        <div class="tech-details-content">
+          <p><strong>Evaluation Framework:</strong> HEURISTIC RISK SCORE evaluation framework (0–24 Low &bull; 25–49 Medium &bull; 50–74 High &bull; 75–100 Critical).</p>
+          <p><strong>Model Phishing Signal:</strong> {{ "%.4f"|format(prediction_result.phishing_probability) }} (Model signal, not a calibrated real-world probability).</p>
+          <p><strong>Underlying Model Classification:</strong> {{ prediction_result.prediction }}</p>
+          <p><strong>Indicators Evaluated:</strong> Positive Structural Indicators and risk indicators derived from 23 lexical features. Note: login or account keywords frequently occur on authentic portals as well as phishing pages.</p>
+        </div>
+      </details>
 
       <!-- Footer Action -->
       <div class="action-footer">

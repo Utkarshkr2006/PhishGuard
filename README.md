@@ -66,7 +66,7 @@ PhishGuard solves this problem by using a **100% offline, multi-tier inspection 
 
 - **100% Offline URL Analysis:** Zero outbound HTTP requests, zero DNS resolutions, zero target server interactions.
 - **23 Deterministic Lexical Features:** Extracts entropy, length ratios, digit/special character densities, suspicious keywords, and TLD indicators directly from the raw string.
-- **Random Forest ML Classification:** Trained on 188,000+ real-world URLs from the PhiUSIIL benchmark dataset.
+- **Random Forest phishing URL classifier:** trained on 188,636 URLs from the PhiUSIIL benchmark dataset.
 - **Rule-Based Explainability Engine:** Generates deterministic, evidence-backed security explanations tied directly to extracted feature values.
 - **Heuristic Risk Scoring:** Synthesizes ML signals, structural red flags, and compound indicators into an intuitive 0–100 score.
 - **Clear Risk Tiers:** Categorizes URLs into `LOW`, `MEDIUM`, `HIGH`, and `CRITICAL` risk tiers with tailored security recommendations.
@@ -83,6 +83,20 @@ PhishGuard solves this problem by using a **100% offline, multi-tier inspection 
 - **Testing:** pytest 8.0+
 - **Frontend:** HTML5, Vanilla CSS3 (Custom dark-mode cyber design, no heavy frameworks)
 - **Deployment:** WSGI-compatible, local-first architecture
+
+---
+
+## Demo
+
+Screenshots will be added in the final presentation/demo update.
+
+### URL Analysis Dashboard
+
+A screenshot of the PhishGuard URL analysis interface.
+
+### Risk Assessment
+
+A screenshot showing the model signal, heuristic risk score, indicators, and recommendations.
 
 ---
 
@@ -136,10 +150,10 @@ The primary metric displayed to users is the **Heuristic Risk Score (0–100)**:
 | **0 – 24** | **LOW** | No major structural anomalies. Continue standard verification before entering credentials. |
 | **25 – 49** | **MEDIUM** | Some structural flags detected (e.g. login keyword or uncalibrated model flag). Exercise caution. |
 | **50 – 74** | **HIGH** | Multiple suspicious indicators detected. Avoid submitting credentials or sensitive data. |
-| **75 – 100** | **CRITICAL** | High-confidence threat patterns (e.g. IP hostname, `@` obfuscation, suspicious TLD + HTTP). Do not interact. |
+| **75 – 100** | **CRITICAL** | Multiple strong threat indicators detected. Do not interact. |
 
 > [!WARNING]
-> **Heuristic Score vs. Probability:**  
+> **Heuristic Risk Score vs. Probability:**  
 > The 0–100 score is a deterministic heuristic composite based on observable structural rules. It is **not** a calibrated statistical probability (a score of 75/100 does not mean a 75% chance of phishing).
 
 ---
@@ -163,7 +177,7 @@ The primary metric displayed to users is the **Heuristic Risk Score (0–100)**:
 ### Setup Steps
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-username/PhishGuard.git
+   git clone https://github.com/Utkarshkr2006/PhishGuard.git
    cd PhishGuard
    ```
 
@@ -244,7 +258,7 @@ To reproduce model training from scratch:
 
 ## 14. Example Analysis
 
-| Submitted URL | Model Signal | Heuristic Score | Risk Level | Primary Indicators |
+| Submitted URL | Model Phishing Signal | Heuristic Risk Score | Risk Level | Primary Indicators |
 |:---|:---:|:---:|:---:|:---|
 | `https://www.wikipedia.org` | Legitimate (0.0028) | **0 / 100** | **LOW** | Encrypted HTTPS protocol, clean root domain structure. |
 | `https://accounts.google.com` | Legitimate (0.0000) | **15 / 100** | **LOW** | Account keyword detected, HTTPS connection. |

@@ -172,30 +172,25 @@ def calculate_risk_score(prediction_result: dict, explanation_result: dict) -> d
             confidence_label = "Moderate agreement"
 
     # -----------------------------------------------------------------
-    # 9. TOP REASONS (Max 5)
+    # 9. TOP REASONS (Max 5) - Strictly Warning/Risk Indicators Only
     # -----------------------------------------------------------------
-    top_reasons = risk_indicators[:5]
-    if not top_reasons:
-        if positive_signals:
-            top_reasons = positive_signals[:2]
-        else:
-            top_reasons = ["No major suspicious URL indicators detected."]
+    top_reasons = [r for r in risk_indicators[:5]]
 
     # -----------------------------------------------------------------
     # 10. DETERMINISTIC SUMMARY & RECOMMENDATION
     # -----------------------------------------------------------------
     if risk_level == "LOW":
-        summary = "No major suspicious URL indicators were detected."
-        recommendation = "Continue to verify the website before entering sensitive information."
+        summary = "No major suspicious indicators were detected in this web address."
+        recommendation = "Before entering your password or personal information, make sure the web address belongs to the service you intended to visit."
     elif risk_level == "MEDIUM":
-        summary = "Some suspicious URL characteristics were detected. Exercise caution."
-        recommendation = "Exercise caution and verify the domain before entering sensitive information."
+        summary = "Some suspicious characteristics were detected. Exercise caution."
+        recommendation = "Before entering passwords or sensitive details, double-check that the domain name is authentic."
     elif risk_level == "HIGH":
-        summary = "Multiple suspicious URL characteristics were detected. Avoid entering sensitive information."
-        recommendation = "Avoid entering passwords, OTPs, payment details, or other sensitive information until the destination is verified."
+        summary = "Multiple suspicious warning signs were detected in this address."
+        recommendation = "Do not enter passwords, payment information, or other sensitive information until you have verified the website through an official source."
     else: # CRITICAL
-        summary = "Multiple strong phishing indicators were detected. Treat this URL as highly suspicious and avoid interacting with it."
-        recommendation = "Do not enter credentials, OTPs, payment information, or other sensitive data. Verify the official domain independently."
+        summary = "Multiple strong warning signs were detected. Treat this address with high caution."
+        recommendation = "Do not enter passwords, payment information, or other sensitive information until you have verified the website through an official source."
 
     return {
         "risk_score": final_risk_score,

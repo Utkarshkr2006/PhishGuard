@@ -647,6 +647,81 @@ body {
   font-family: var(--font-mono);
 }
 
+.signal-subtext {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+  width: 100%;
+}
+
+/* Limitations Banner */
+.limitations-banner {
+  background: rgba(59, 130, 246, 0.08);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1.1rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  line-height: 1.45;
+}
+
+.limitations-banner svg {
+  flex-shrink: 0;
+  color: var(--accent-cyan);
+}
+
+.section-intro {
+  font-size: 0.92rem;
+  color: var(--text-main);
+  font-weight: 500;
+}
+
+.score-disclaimer-note {
+  font-size: 0.72rem;
+  color: #64748b;
+  line-height: 1.35;
+  margin-top: 0.25rem;
+  font-style: italic;
+}
+
+.score-bands-text {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  opacity: 0.75;
+}
+
+/* Technical Details Accordion */
+.tech-details-accordion {
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.tech-details-summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text-muted);
+  user-select: none;
+}
+
+.tech-details-summary:hover {
+  color: var(--text-main);
+}
+
+.tech-details-content {
+  padding-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  line-height: 1.4;
+}
+
 /* Footer Action */
 .action-footer {
   display: flex;

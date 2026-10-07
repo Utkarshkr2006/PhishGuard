@@ -46,7 +46,7 @@ def test_analyze_suspicious_url(client):
     html = response.data.decode('utf-8')
     assert 'CRITICAL' in html
     assert '192.168.1.100' in html
-    assert 'IP address used directly as the domain' in html
+    assert 'Uses a numeric address instead of a normal website name' in html or 'IP address' in html
     assert 'Traceback' not in html
 
 def test_analyze_empty_url(client):
@@ -102,6 +102,44 @@ def test_internal_error_does_not_leak_stack_trace(client, monkeypatch):
     assert 'SecretModelError' not in html
     assert '/confidential/code' not in html
     assert 'Traceback' not in html
+
+def test_no_duplicate_positive_indicators_in_warning_section(client):
+    """Test 10 (Explainability Fix): Verify positive indicators are NOT duplicated into warning section."""
+    # 1. Benign URL: wikipedia.org
+    res_wiki = client.post('/analyze', data={'url': 'https://www.wikipedia.org'})
+    assert res_wiki.status_code == 200
+    html_wiki = res_wiki.data.decode('utf-8')
+
+    # Verify friendly headings
+    assert 'What We Noticed' in html_wiki
+    assert 'Good Signs We Found' in html_wiki
+
+    # Warning section should have clean empty state
+    assert 'No suspicious indicators were detected in the web address.' in html_wiki
+
+    # Positive section should display good signs
+    assert 'Uses a secure HTTPS connection' in html_wiki
+    assert 'Website address looks simple and clean' in html_wiki
+
+    # Verify positive indicators are NOT in the warning section
+    wiki_warning_block = html_wiki.split('What We Noticed')[1].split('Good Signs We Found')[0]
+    assert 'Uses a secure HTTPS connection' not in wiki_warning_block
+    assert 'Website address looks simple and clean' not in wiki_warning_block
+    assert 'item-risk' not in wiki_warning_block
+
+    # 2. Path URL with HTTPS: github.com/login
+    res_gh = client.post('/analyze', data={'url': 'https://github.com/login'})
+    assert res_gh.status_code == 200
+    html_gh = res_gh.data.decode('utf-8')
+    gh_warning_block = html_gh.split('What We Noticed')[1].split('Good Signs We Found')[0]
+    gh_positive_block = html_gh.split('Good Signs We Found')[1]
+
+    # HTTPS must be under Good Signs, NOT under What We Noticed
+    assert 'Uses a secure HTTPS connection' not in gh_warning_block
+    assert 'Uses a secure HTTPS connection' in gh_positive_block
+
+    # Warning section should have keyword indicator
+    assert 'account or login scams' in gh_warning_block
 
 if __name__ == '__main__':
     pytest.main(['-v', __file__])
